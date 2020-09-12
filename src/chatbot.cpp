@@ -42,6 +42,55 @@ ChatBot::~ChatBot()
     }
 }
 
+//COPY CONSTRUCTOR
+ChatBot::ChatBot(ChatBot &other) {
+    _image = new wxBitmap(*(other._image));
+    _chatLogic = new ChatLogic(*(other._chatLogic));
+    _rootNode = new GraphNode(*(other._rootNode));
+}
+
+//COPY OPERATOR
+ChatBot &ChatBot::operator=(const ChatBot &other) {
+    if (&other != this) {
+        delete _image;
+        delete _chatLogic;
+        delete _rootNode;
+
+        _image = nullptr;
+        _chatLogic = nullptr;
+        _rootNode = nullptr;
+
+        _image = new wxBitmap(*(other._image));
+        _chatLogic = new ChatLogic(*(other._chatLogic));
+        _rootNode = new GraphNode(*(other._rootNode));
+    }
+}
+
+//MOVE CONSTRUCTOR
+ChatBot::ChatBot(ChatBot &&other): _image(other._image), _chatLogic(other._chatLogic), _rootNode(other._rootNode) {
+    other._image = nullptr;
+    other._chatLogic = nullptr;
+    other._rootNode = nullptr;
+}
+
+//MOVE OPERATOR
+ChatBot &ChatBot::operator=(ChatBot &&other) noexcept {
+    if (&other != this) {
+        delete _image;
+        delete _chatLogic;
+        delete _rootNode;
+
+        _image = other._image;
+        _chatLogic = other._chatLogic;
+        _rootNode = other._rootNode;
+
+        other._image = nullptr;
+        other._chatLogic = nullptr;
+        other._rootNode = nullptr;
+    }
+    return *this;
+}
+
 //// STUDENT CODE
 ////
 
