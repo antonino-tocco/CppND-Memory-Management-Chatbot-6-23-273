@@ -20,10 +20,10 @@ ChatLogic::ChatLogic()
     _nodes = std::make_shared<std::vector<GraphNode*>>();
     _edges = std::make_shared<std::vector<GraphEdge*>>();
     // create instance of chatbot
-    _chatBot = new ChatBot("../images/chatbot.png");
+    _chatBot = std::make_shared<ChatBot* >(new ChatBot("../images/chatbot.png"));
 
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot->SetChatLogicHandle(this);
+    (*_chatBot)->SetChatLogicHandle(this);
 
     ////
     //// EOF STUDENT CODE
@@ -35,7 +35,6 @@ ChatLogic::~ChatLogic()
     ////
 
     // delete chatbot instance
-    delete _chatBot;
 
     // delete all nodes
     //WITH SMART POINTERS NO NEED TO DELETE IT MANUALLY
@@ -199,6 +198,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
     //// STUDENT CODE
     ////
+    std::weak_ptr<ChatBot*> chatBot(_chatBot);
 
     // identify root node
     GraphNode *rootNode = nullptr;
@@ -220,8 +220,9 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // add chatbot to graph root node
-    _chatBot->SetRootNode(rootNode);
-    rootNode->MoveChatbotHere(_chatBot);
+    (*chatBot.lock())->SetRootNode(rootNode);
+
+    rootNode->MoveChatbotHere(chatBot);
     
     ////
     //// EOF STUDENT CODE
@@ -234,12 +235,12 @@ void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
 
 void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
 {
-    _chatBot = chatbot;
+    _chatBot = std::make_shared<ChatBot* >(chatbot);
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message)
 {
-    _chatBot->ReceiveMessageFromUser(message);
+    (*_chatBot)->ReceiveMessageFromUser(message);
 }
 
 void ChatLogic::SendMessageToUser(std::string message)
@@ -249,5 +250,5 @@ void ChatLogic::SendMessageToUser(std::string message)
 
 wxBitmap *ChatLogic::GetImageFromChatbot()
 {
-    return _chatBot->GetImageHandle();
+    return (*_chatBot)->GetImageHandle();
 }
