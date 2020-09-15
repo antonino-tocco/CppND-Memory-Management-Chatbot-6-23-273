@@ -5,7 +5,7 @@ GraphNode::GraphNode(int id)
 {
     _id = id;
     _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
-    _parentEdges = std::vector<GraphEdge>();
+    _parentEdges = std::vector<GraphEdge*>();
 }
 
 GraphNode::~GraphNode()
@@ -69,12 +69,12 @@ void GraphNode::AddToken(std::string token)
     _answers.push_back(token);
 }
 
-void GraphNode::AddEdgeToParentNode(GraphEdge edge)
+void GraphNode::AddEdgeToParentNode(GraphEdge* edge)
 {
     _parentEdges.push_back(edge);
 }
 
-void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
+void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge>& edge)
 {
     _childEdges.push_back(std::move(edge));
 }

@@ -11,12 +11,12 @@ GraphEdge::~GraphEdge()
 
 }
 
-void GraphEdge::SetChildNode(std::shared_ptr<GraphNode> childNode)
+void GraphEdge::SetChildNode(GraphNode* childNode)
 {
     _childNode = childNode;
 }
 
-void GraphEdge::SetParentNode(std::shared_ptr<GraphNode> parentNode)
+void GraphEdge::SetParentNode(GraphNode* parentNode)
 {
     _parentNode = parentNode;
 }
