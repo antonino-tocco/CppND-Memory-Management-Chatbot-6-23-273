@@ -52,9 +52,6 @@ ChatBot::ChatBot(ChatBot &other) {
 ChatBot& ChatBot::operator=(const ChatBot &other) {
     std::cout << "ChatBot Copy Assignment Operator" << std::endl;
     if (&other != this) {
-        delete _image;
-        delete _chatLogic;
-        delete _rootNode;
 
         _image = nullptr;
         _chatLogic = nullptr;
@@ -83,9 +80,6 @@ ChatBot& ChatBot::operator=(ChatBot &&other) noexcept {
 
     std::cout << "ChatBot Move Assignment Operator" << std::endl;
     if (&other != this) {
-        delete _image;
-        delete _chatLogic;
-        delete _rootNode;
 
         _image = other._image;
         _chatLogic = other._chatLogic;

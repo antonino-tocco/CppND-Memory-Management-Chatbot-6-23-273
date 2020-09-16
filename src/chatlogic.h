@@ -19,12 +19,10 @@ private:
     // data handles (owned)
     std::vector<std::unique_ptr<GraphNode>> _nodes;
 
-    ////
-    //// EOF STUDENT CODE
+    ChatBot* _chatBot;
 
     // data handles (not owned)
     GraphNode *_currentNode;
-    ChatBot* _chatBot;
     ChatBotPanelDialog *_panelDialog;
 
     // proprietary type definitions

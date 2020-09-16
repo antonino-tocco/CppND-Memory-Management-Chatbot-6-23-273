@@ -14,18 +14,11 @@
 
 ChatLogic::ChatLogic()
 {
-    //// STUDENT CODE
-    ////
-
     _nodes = std::vector<std::unique_ptr<GraphNode>>();
-    // create instance of chatbot
-    _chatBot = new ChatBot("../images/chatbot.png");
+    //_chatBot = new ChatBot("../images/chatbot.png");
 
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot->SetChatLogicHandle(this);
-
-    ////
-    //// EOF STUDENT CODE
+    //_chatBot->SetChatLogicHandle(this);
 }
 
 ChatLogic::~ChatLogic()
@@ -174,8 +167,8 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             // find all keywords for current node
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
 
-                            childNode->get()->AddEdgeToChildNode(edge);
                             parentNode->get()->AddEdgeToParentNode(edge.get());
+                            childNode->get()->AddEdgeToChildNode(std::move(edge));
 
                             // store reference in child node and parent node
 
@@ -223,11 +216,17 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // add chatbot to graph root node
-    ChatBot chatBot = ChatBot(std::move(*_chatBot));
+    ChatBot chatBot = ChatBot("../images/chatbot.png");
+
+    SetChatbotHandle(&chatBot);
+
+    chatBot.SetChatLogicHandle(this);
+
     chatBot.SetRootNode(rootNode);
 
     rootNode->MoveChatbotHere(chatBot);
-    
+
+
     ////
     //// EOF STUDENT CODE
 }
@@ -239,7 +238,7 @@ void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
 
 void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
 {
-    _chatBot = chatbot;
+    _chatBot = new ChatBot(std::move(*chatbot));
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message)
