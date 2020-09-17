@@ -14,7 +14,6 @@ ChatBot::ChatBot() {
     _image = nullptr;
     _chatLogic = nullptr;
     _rootNode = nullptr;
-    _currentNode = nullptr;
 }
 
 // constructor WITH memory allocation
@@ -34,7 +33,7 @@ ChatBot::~ChatBot() {
     std::cout << "ChatBot Destructor" << std::endl;
 
     // deallocate heap memory
-    if (_image != nullptr) // Attention: wxWidgets used NULL and not nullptr
+    if (_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
         delete _image;
     }
@@ -73,15 +72,9 @@ ChatBot& ChatBot::operator=(const ChatBot &other) {
 }
 
 //MOVE CONSTRUCTOR
-ChatBot::ChatBot(ChatBot &&other) : _image(other._image), _chatLogic(other._chatLogic), _rootNode(other._rootNode) {
+ChatBot::ChatBot(ChatBot &&other) : _image(other._image), _chatLogic(other._chatLogic), _rootNode(other._rootNode), _currentNode(other._currentNode) {
 
     std::cout << "ChatBot Move Constructor" << std::endl;
-
-    _image = other._image;
-    _chatLogic = other._chatLogic;
-    _rootNode = other._rootNode;
-    _currentNode = other._currentNode;
-
 
 //    other._image = nullptr;
 //    other._chatLogic = nullptr;

@@ -219,11 +219,11 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     // add chatbot to graph root node
     ChatBot chatBot = ChatBot("../images/chatbot.png");
 
-    SetChatbotHandle(&chatBot);
-
     chatBot.SetChatLogicHandle(this);
 
     chatBot.SetRootNode(rootNode);
+
+    SetChatbotHandle(chatBot);
 
     rootNode->MoveChatbotHere(chatBot);
 
@@ -237,9 +237,9 @@ void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
     _panelDialog = panelDialog;
 }
 
-void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
+void ChatLogic::SetChatbotHandle(ChatBot& chatBot)
 {
-    _chatBot = new ChatBot(std::move(*chatbot));
+    _chatBot = std::make_unique<ChatBot>(std::move(chatBot));
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message)

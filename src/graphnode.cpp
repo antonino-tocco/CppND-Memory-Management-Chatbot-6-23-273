@@ -14,8 +14,6 @@ GraphNode::~GraphNode()
 }
 
 GraphNode::GraphNode(GraphNode& other) {
-    _chatBot = other._chatBot;
-
     _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
     _parentEdges = other._parentEdges;
 
@@ -27,8 +25,6 @@ GraphNode::GraphNode(GraphNode& other) {
 
 GraphNode& GraphNode::operator=(const GraphNode& other) {
     if (&other != this) {
-
-        _chatBot = other._chatBot;
         _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
         _parentEdges = other._parentEdges;
 
@@ -41,7 +37,6 @@ GraphNode& GraphNode::operator=(const GraphNode& other) {
 }
 
 GraphNode::GraphNode(GraphNode &&other) {
-    _chatBot = other._chatBot;
     _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
     _parentEdges = other._parentEdges;
 
@@ -50,10 +45,8 @@ GraphNode::GraphNode(GraphNode &&other) {
     }
 }
 
-GraphNode& GraphNode::operator=(GraphNode &&other) {
+GraphNode& GraphNode::operator=(GraphNode &&other) noexcept {
     if (&other != this) {
-
-        _chatBot = other._chatBot;
         _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
         _parentEdges = other._parentEdges;
 

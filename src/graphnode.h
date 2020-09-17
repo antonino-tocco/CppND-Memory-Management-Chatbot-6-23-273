@@ -40,7 +40,7 @@ public:
     //MOVE CONSTRUCTOR
     GraphNode(GraphNode&& other);
     //MOVE ASSIGNMENT OPERATOR
-    GraphNode& operator=(GraphNode&& other);
+    GraphNode& operator=(GraphNode&& other) noexcept ;
 
     // getter / setter
     int GetID() { return _id; }
@@ -54,7 +54,7 @@ public:
     void AddEdgeToParentNode(GraphEdge* edge);
     void AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge);
 
-    void MoveChatbotHere(ChatBot& chatbot);
+    void MoveChatbotHere(ChatBot& chatBot);
 
 
     void MoveChatbotToNewNode(GraphNode *newNode);

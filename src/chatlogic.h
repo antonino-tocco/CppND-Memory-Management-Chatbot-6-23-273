@@ -19,7 +19,7 @@ private:
     // data handles (owned)
     std::vector<std::unique_ptr<GraphNode>> _nodes;
 
-    ChatBot* _chatBot;
+    std::unique_ptr<ChatBot> _chatBot;
 
     // data handles (not owned)
     GraphNode *_currentNode;
@@ -39,7 +39,7 @@ public:
 
     // getter / setter
     void SetPanelDialogHandle(ChatBotPanelDialog *panelDialog);
-    void SetChatbotHandle(ChatBot *chatbot);
+    void SetChatbotHandle(ChatBot& chatBot);
 
     // proprietary functions
     void LoadAnswerGraphFromFile(std::string filename);
