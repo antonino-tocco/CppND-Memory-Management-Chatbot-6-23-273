@@ -14,6 +14,7 @@ ChatBot::ChatBot() {
     _image = nullptr;
     _chatLogic = nullptr;
     _rootNode = nullptr;
+    _currentNode = nullptr;
 }
 
 // constructor WITH memory allocation
@@ -23,6 +24,7 @@ ChatBot::ChatBot(std::string filename) {
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
+    _currentNode = nullptr;
 
     // load image into heap memory
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
@@ -35,7 +37,6 @@ ChatBot::~ChatBot() {
     if (_image != nullptr) // Attention: wxWidgets used NULL and not nullptr
     {
         delete _image;
-        _image = nullptr;
     }
 }
 
@@ -43,9 +44,12 @@ ChatBot::~ChatBot() {
 ChatBot::ChatBot(ChatBot &other) {
 
     std::cout << "ChatBot Copy Constructor" << std::endl;
-    _image = new wxBitmap(*(other._image));
+    _image = new wxBitmap(*other._image);
     _chatLogic = other._chatLogic;
     _rootNode = other._rootNode;
+    _currentNode = other._currentNode;
+    //_chatLogic = new ChatLogic(*other._chatLogic);
+    //_rootNode = new GraphNode(*other._rootNode);
 }
 
 //COPY OPERATOR
@@ -56,10 +60,14 @@ ChatBot& ChatBot::operator=(const ChatBot &other) {
         _image = nullptr;
         _chatLogic = nullptr;
         _rootNode = nullptr;
+        _currentNode = nullptr;
 
-        _image = new wxBitmap(*(other._image));
+        _image = new wxBitmap(*other._image);
         _chatLogic = other._chatLogic;
         _rootNode = other._rootNode;
+        _currentNode = other._currentNode;
+        //_chatLogic = new ChatLogic(*other._chatLogic);
+        //_rootNode = new GraphNode(*other._rootNode);
     }
     return *this;
 }
@@ -72,6 +80,13 @@ ChatBot::ChatBot(ChatBot &&other) : _image(other._image), _chatLogic(other._chat
     _image = other._image;
     _chatLogic = other._chatLogic;
     _rootNode = other._rootNode;
+    _currentNode = other._currentNode;
+
+
+//    other._image = nullptr;
+//    other._chatLogic = nullptr;
+//    other._rootNode = nullptr;
+//    other._currentNode = nullptr;
 
 }
 
@@ -84,10 +99,12 @@ ChatBot& ChatBot::operator=(ChatBot &&other) noexcept {
         _image = other._image;
         _chatLogic = other._chatLogic;
         _rootNode = other._rootNode;
+        _currentNode = other._currentNode;
 
-        other._image = nullptr;
-        other._chatLogic = nullptr;
-        other._rootNode = nullptr;
+//        other._image = nullptr;
+//        other._chatLogic = nullptr;
+//        other._rootNode = nullptr;
+//        other._currentNode = nullptr;
     }
     return *this;
 }
