@@ -26,10 +26,6 @@ ChatLogic::~ChatLogic()
     //// STUDENT CODE
     ////
 
-//    if (_chatBot != nullptr) {
-//        delete _chatBot;
-//    }
-
 
     // delete chatbot instance
 
@@ -225,7 +221,10 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
     SetChatbotHandle(chatBot);
 
-    rootNode->MoveChatbotHere(chatBot);
+    rootNode->MoveChatbotHere(_chatBot);
+
+
+
 
 
     ////
@@ -239,7 +238,7 @@ void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
 
 void ChatLogic::SetChatbotHandle(ChatBot& chatBot)
 {
-    _chatBot = std::make_unique<ChatBot>(std::move(chatBot));
+    _chatBot = new ChatBot(std::move(chatBot));
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message)
