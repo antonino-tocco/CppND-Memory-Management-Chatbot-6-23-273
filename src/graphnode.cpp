@@ -1,5 +1,7 @@
 #include "graphedge.h"
 #include "graphnode.h"
+#include <iostream>
+
 
 GraphNode::GraphNode(int id)
 {
@@ -10,12 +12,13 @@ GraphNode::GraphNode(int id)
 
 GraphNode::~GraphNode()
 {
-
+    std::cout << "Destructor for node " << _id << std::endl;
 }
 
 GraphNode::GraphNode(GraphNode& other) {
     _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
     _parentEdges = other._parentEdges;
+    _answers = other._answers;
 
     for (const auto &p : other._childEdges) {
         _childEdges.push_back(std::make_unique<GraphEdge>(p->GetID()));
@@ -27,6 +30,7 @@ GraphNode& GraphNode::operator=(const GraphNode& other) {
     if (&other != this) {
         _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
         _parentEdges = other._parentEdges;
+        _answers = other._answers;
 
         for (const auto &p : other._childEdges) {
             _childEdges.push_back(std::make_unique<GraphEdge>(p->GetID()));
@@ -39,6 +43,7 @@ GraphNode& GraphNode::operator=(const GraphNode& other) {
 GraphNode::GraphNode(GraphNode &&other) {
     _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
     _parentEdges = other._parentEdges;
+    _answers = other._answers;
 
     for (const auto &p : other._childEdges) {
         _childEdges.push_back(std::make_unique<GraphEdge>(p->GetID()));
@@ -49,6 +54,7 @@ GraphNode& GraphNode::operator=(GraphNode &&other) noexcept {
     if (&other != this) {
         _childEdges = std::vector<std::unique_ptr<GraphEdge>>();
         _parentEdges = other._parentEdges;
+        _answers = other._answers;
 
         for (const auto &p : other._childEdges) {
             _childEdges.push_back(std::make_unique<GraphEdge>(p->GetID()));
@@ -74,14 +80,23 @@ void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
 
 //// STUDENT CODE
 ////
-void GraphNode::MoveChatbotHere(ChatBot* chatbot)
+void GraphNode::MoveChatbotHere(ChatBot chatbot)
 {
-    _chatBot = chatbot;
-    _chatBot->SetCurrentNode(this);
+    /*
+     * THE ASSIGNMENT WITH MOVE GIVE USE A ChatBotT&&
+     * AND MOVE ASSIGNMENT OPERATOR IS CALLED
+     */
+    _chatBot = std::move(chatbot);
+    _chatBot.SetCurrentNode(this);
+
+    /*
+     * DESTRUCTOR FOR chatbot ARGUMENT IS CALLED HERE
+     */
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
 {
+
     newNode->MoveChatbotHere(_chatBot);
 }
 ////

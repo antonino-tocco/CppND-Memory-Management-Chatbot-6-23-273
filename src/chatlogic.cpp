@@ -28,6 +28,9 @@ ChatLogic::~ChatLogic()
 
 
     // delete chatbot instance
+    if (_chatBot != nullptr) {
+        delete _chatBot;
+    }
 
     // delete all nodes
     /*
@@ -213,18 +216,28 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // add chatbot to graph root node
+
+    //CREATE LOCAL CHATBOT IN STACK WITHOUT NEW
     ChatBot chatBot = ChatBot("../images/chatbot.png");
 
+    //SET INSTANCE CHATBOT TO ADDRESS OF LOCAL CHATBOT
+    SetChatbotHandle(&chatBot);
+
+    //SET CHAT LOGIC HANDLE
     chatBot.SetChatLogicHandle(this);
 
+    //SET CHAT LOGIC HANDLE
     chatBot.SetRootNode(rootNode);
 
-    SetChatbotHandle(chatBot);
+    /*
+     * MOVE TO CHATBOT
+     * THE CAST AND COPY FOR PASS TO FUNCTION CALL
+     * THE MOVE CONSTRUCTOR FOR CONSTRUCT A COPY BECAUSE ARGUMENT
+     * IS ChatBot&& TYPE WITH CAST
+     */
+    rootNode->MoveChatbotHere((ChatBot &&) chatBot);
 
-    rootNode->MoveChatbotHere(_chatBot);
-
-
-
+    //DESTRUCTOR FOR LOCAL CHATBOT CALLED HERE
 
 
     ////
@@ -236,9 +249,9 @@ void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
     _panelDialog = panelDialog;
 }
 
-void ChatLogic::SetChatbotHandle(ChatBot& chatBot)
+void ChatLogic::SetChatbotHandle(ChatBot* chatBot)
 {
-    _chatBot = new ChatBot(std::move(chatBot));
+    _chatBot = chatBot;
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message)
